@@ -24,16 +24,27 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
+
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name="product_id", nullable = false )
     private Product product;
-    @OneToOne(fetch = FetchType.EAGER)
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
     private Member member;
+
+    @Column
+    private int rating;
+
     @Lob
     private int rating;
     @Column
     private String content;
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<ReviewImageData> reviewImageDataList = new ArrayList<>();
+
+
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<ReviewImageData> reviewImageDataList = new ArrayList<>();
